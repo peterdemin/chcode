@@ -1,0 +1,10 @@
+Session.vim
+*.swp
+/*.egg-info/
+__pycache__/
+/forms/
+/build/
+/dist/
+/github.com/
+.coverage
+docs/_build/

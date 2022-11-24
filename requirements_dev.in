@@ -1,0 +1,14 @@
+-r requirements.in
+
+pylint
+black
+isort
+twine
+pip-compile-multi
+flake8
+Flake8-pyproject
+pytest
+ipdb
+mypy
+pytype
+pytest-cov
