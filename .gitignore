@@ -1,10 +1,7 @@
 Session.vim
 *.swp
-/*.egg-info/
+*.egg-info/
 __pycache__/
-/forms/
 /build/
 /dist/
-/github.com/
 .coverage
-docs/_build/
