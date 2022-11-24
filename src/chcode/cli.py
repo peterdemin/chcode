@@ -1,36 +1,52 @@
 import json
-import asttokens, ast
-import xmltodict
-import lxml
+
+import click
+
+from chcode.loader import ASTLoader
+from chcode.source_changer_factory import build_source_changer
 
 
-def span_text(source, span):
-    start, _, end = span.partition('-')
-    return source[int(start): int(end)]
+@click.group()
+def cli():
+    pass
 
 
-def sub_span(source, span, sub):
-    start, _, end = span.partition('-')
-    return source[:int(start)] + sub + source[int(end):]
+@cli.command()
+@click.option('-i', '--in-place', default=False, is_flag=True,
+              help='Save changes in the source file.')
+@click.argument('code')
+@click.argument('source', type=click.File('rt', encoding='utf-8'))
+def run(in_place: bool, code: str, source: click.File):
+    """Execute CODE on SOURCE."""
+    result = exec_code(code, source.read())
+    source.close()
+    if in_place:
+        with open(source.name, "wt", encoding='utf-8') as fobj:
+            fobj.write(result)
+    else:
+        click.echo(result)
 
 
-source = '''
-setup(
-    name="__TARGET__".format(x=123),
-)
-'''
-tree = lxml.etree.fromstring(xmltodict.unparse(jsonify_ast(asttokens.ASTTokens(source, parse=True).tree)).encode('utf-8'))
-elem = tree.xpath('//*[@value="__TARGET__"]')[0]
+@cli.command()
+@click.argument('source', type=click.File('rt', encoding='utf-8'))
+def ast(source):
+    """Print Abstract Syntax Tree for SOURCE."""
+    click.echo(load_ast(source.read()))
 
 
-def change_arg_value(source, func, kwarg, value):
-    tree = lxml.etree.fromstring(xmltodict.unparse(jsonify_ast(asttokens.ASTTokens(source, parse=True).tree)).encode('utf-8'))
-    expr = tree.xpath(f'//Call[func/Name[@id="{func}"]]//keyword[@arg="{kwarg}"]/value//@span')
-    return sub_span(source, expr[0], repr(value))
+def exec_code(code: str, source: str) -> str:
+    source_changer = build_source_changer(source)
+    ns = {'source_changer': source_changer}
+    bytecode = compile('source_changer.' + code, '-', mode='eval')
+    return eval(bytecode, {}, ns)
+
+
+def load_ast(source: str) -> str:
+    return json.dumps(ASTLoader()(source), indent=2)
 
 
 def main() -> None:
-    pass
+    cli()
 
 
 if __name__ == '__main__':

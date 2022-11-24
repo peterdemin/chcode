@@ -1,6 +1,7 @@
 .DEFAULT_GOAL := help
 
 PROJ := chcode
+PROJ_ROOT := src/$(PROJ)
 
 define PRINT_HELP_PYSCRIPT
 import re, sys
@@ -40,13 +41,13 @@ release: dist ## package and upload a release
 
 .PHONY: lint
 lint: ## check style with pylint
-	pylint -j 0 $(PROJ) tests
-	mypy $(PROJ)/
-	pytype -j auto $(PROJ)/
+	pylint -j 0 $(PROJ_ROOT)
+	mypy $(PROJ_ROOT)/
+	pytype -j auto $(PROJ_ROOT)/
 
 .PHONY: test
 test: ## run test suite
-	pytest --cov=$(PROJ) tests
+	pytest --cov=$(PROJ) $(PROJ_ROOT)
 
 .PHONY: install
 install: ## install the package with dev dependencies
