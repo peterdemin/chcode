@@ -36,4 +36,7 @@ class SourceChanger:
         return self._tree_converter(self._loader(self._source))
 
     def _first_xpath(self, expr: str) -> str:
-        return self._tree.xpath(expr)[0]
+        try:
+            return self._tree.xpath(expr)[0]
+        except lxml.etree.XPathEvalError as exc:
+            raise ValueError(expr) from exc
