@@ -1,5 +1,6 @@
-from dataclasses import dataclass
 import enum
+from dataclasses import dataclass
+
 from chcode.locator import Locator
 from chcode.tree import Tree
 
@@ -22,13 +23,11 @@ class ReplaceAction(Action):
 
     def run(self, source: str) -> str:
         start, _, end = self.span.partition('-')
-        return source[: int(start)] + self.text + source[int(end):]
+        return source[: int(start)] + self.text + source[int(end) :]
 
 
 class ActionBuilder:
-    def __init__(self,
-                 tree: Tree,
-                 session: list) -> None:
+    def __init__(self, tree: Tree, session: list) -> None:
         self._tree = tree
         self._session = session
 

@@ -12,9 +12,7 @@ class Locator:
 
     def arg(self, arg_name: Union[int, str]) -> 'Locator':
         self._expr = '//' + (
-            self._kwarg_value(arg_name)
-            if isinstance(arg_name, str)
-            else self._arg_value(arg_name)
+            self._kwarg_value(arg_name) if isinstance(arg_name, str) else self._arg_value(arg_name)
         )
         return Locator(self)
 
@@ -25,11 +23,7 @@ class Locator:
 
     @property
     def full_xpath(self) -> 'str':
-        return (
-            self._parent.full_xpath
-            if self._parent
-            else ''
-        ) + (self._expr or '//@span')
+        return (self._parent.full_xpath if self._parent else '') + (self._expr or '//@span')
 
     def _arg_value(self, arg_pos: int) -> str:
         return f'args[{arg_pos+1}]'

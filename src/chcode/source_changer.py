@@ -1,7 +1,7 @@
-from typing import Any, Union, List
+from typing import Any, List, Union
 
+from chcode.action_builder import Action, ActionBuilder
 from chcode.locator import Locator
-from chcode.action_builder import ActionBuilder, Action
 from chcode.tree import TreeBuilder
 
 
@@ -16,10 +16,7 @@ class SourceChanger:
 
     def arg_value(self, func: str, arg_name: Union[int, str], value: Any) -> str:
         session: List[Action] = []
-        ActionBuilder(
-            tree=self._tree_builder(self._source),
-            session=session
-        ).replace(
+        ActionBuilder(tree=self._tree_builder(self._source), session=session).replace(
             Locator().call(func).arg(arg_name).value,
             value,
         )

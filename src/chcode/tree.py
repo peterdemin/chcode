@@ -1,8 +1,10 @@
-from typing import cast, List
+from typing import List, cast
+
 import lxml.etree
+
+from chcode.loader import ASTLoader
 from chcode.locator import Locator
 from chcode.tree_converter import TreeConverter
-from chcode.loader import ASTLoader
 from chcode.types import Element
 
 

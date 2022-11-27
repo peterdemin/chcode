@@ -1,5 +1,6 @@
-import xmltodict
 import lxml.etree
+import xmltodict
+
 from chcode.types import Element
 
 

@@ -42,8 +42,7 @@ release: dist ## package and upload a release
 .PHONY: lint
 lint: ## check style with pylint
 	pylint $(PROJ_ROOT)
-	mypy $(PROJ_ROOT)/
-	pytype -j auto $(PROJ_ROOT)/
+	mypy $(PROJ_ROOT)
 
 .PHONY: test
 test: ## run test suite
@@ -72,3 +71,8 @@ upgrade: ## upgrade versions of third-party dependencies
 		--allow-unsafe \
 		-t requirements_dev.in \
 		--use-cache
+
+.PHONY: fmt
+fmt: ## Reformat all Python files
+	isort $(PROJ_ROOT)
+	black $(PROJ_ROOT)

@@ -13,8 +13,9 @@ def cli():
 
 
 @cli.command()
-@click.option('-i', '--in-place', default=False, is_flag=True,
-              help='Save changes in the source file.')
+@click.option(
+    '-i', '--in-place', default=False, is_flag=True, help='Save changes in the source file.'
+)
 @click.argument('code')
 @click.argument('source', type=click.File('rt', encoding='utf-8'))
 def run(in_place: bool, code: str, source: io.TextIOWrapper):
