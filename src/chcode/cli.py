@@ -36,9 +36,9 @@ def ast(source):
 
 def exec_code(code: str, source: str) -> str:
     source_changer = build_source_changer(source)
-    ns = {'source_changer': source_changer}
+    namespace = {'source_changer': source_changer}
     bytecode = compile('source_changer.' + code, '-', mode='eval')
-    return eval(bytecode, {}, ns)
+    return eval(bytecode, {}, namespace)  # pylint: disable=eval-used
 
 
 def load_ast(source: str) -> str:

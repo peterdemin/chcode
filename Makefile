@@ -41,7 +41,7 @@ release: dist ## package and upload a release
 
 .PHONY: lint
 lint: ## check style with pylint
-	pylint -j 0 $(PROJ_ROOT)
+	pylint $(PROJ_ROOT)
 	mypy $(PROJ_ROOT)/
 	pytype -j auto $(PROJ_ROOT)/
 
@@ -64,7 +64,6 @@ lock: ## lock versions of third-party dependencies
 		--allow-unsafe \
 		-t requirements_dev.in \
 		--use-cache \
-		--backtracking \
 		--no-upgrade
 
 .PHONY: upgrade
@@ -72,5 +71,4 @@ upgrade: ## upgrade versions of third-party dependencies
 	pip-compile-multi --directory . \
 		--allow-unsafe \
 		-t requirements_dev.in \
-		--use-cache \
-		--backtracking
+		--use-cache

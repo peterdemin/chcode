@@ -12,3 +12,5 @@ ipdb
 mypy
 pytype
 pytest-cov
+types-six
+types-xmltodict
