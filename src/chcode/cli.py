@@ -1,3 +1,4 @@
+import io
 import json
 
 import click
@@ -16,7 +17,7 @@ def cli():
               help='Save changes in the source file.')
 @click.argument('code')
 @click.argument('source', type=click.File('rt', encoding='utf-8'))
-def run(in_place: bool, code: str, source: click.File):
+def run(in_place: bool, code: str, source: io.TextIOWrapper):
     """Execute CODE on SOURCE."""
     result = exec_code(code, source.read())
     source.close()

@@ -1,7 +1,7 @@
-from typing import Any, Union
+from typing import Any, Union, List
 
 from chcode.locator import Locator
-from chcode.action_builder import ActionBuilder
+from chcode.action_builder import ActionBuilder, Action
 from chcode.tree import TreeBuilder
 
 
@@ -15,7 +15,7 @@ class SourceChanger:
         self._tree_builder = tree_builder
 
     def arg_value(self, func: str, arg_name: Union[int, str], value: Any) -> str:
-        session = []
+        session: List[Action] = []
         ActionBuilder(
             tree=self._tree_builder(self._source),
             session=session

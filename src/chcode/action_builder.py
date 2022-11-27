@@ -12,6 +12,9 @@ class ActionType(enum.Enum):
 class Action:
     span: str
 
+    def run(self, source: str) -> str:
+        raise NotImplementedError()
+
 
 @dataclass
 class ReplaceAction(Action):
@@ -36,3 +39,4 @@ class ActionBuilder:
                 text=repr(text),
             )
         )
+        return self

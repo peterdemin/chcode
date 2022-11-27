@@ -1,16 +1,17 @@
 import ast
-from typing import Type
+from typing import Any, Dict, Union
 
 import asttokens
 
 
 class ASTLoader:
-
     def __call__(self, source: str) -> dict:
-        return self._jsonify_ast(asttokens.ASTTokens(source, parse=True).tree)
+        module = asttokens.ASTTokens(source, parse=True).tree
+        assert module
+        return self._jsonify_ast(module)
 
-    def _jsonify_ast(self, node: ast.AST) -> dict:
-        fields = {}
+    def _jsonify_ast(self, node: Union[ast.Module, ast.AST]) -> dict:
+        fields: Dict[str, Any] = {}
         for k in node._fields:
             value = getattr(node, k)
             if isinstance(value, ast.AST):
@@ -25,7 +26,7 @@ class ASTLoader:
         return {self._classname(node): self._span(fields, node)}
 
     @staticmethod
-    def _classname(klass: Type) -> str:
+    def _classname(klass: Any) -> str:
         return klass.__class__.__name__
 
     @staticmethod
@@ -35,6 +36,8 @@ class ASTLoader:
     @staticmethod
     def _span(fields: dict, node: ast.AST) -> dict:
         if getattr(node, 'first_token', None):
-            span = f'{node.first_token.startpos}-{node.last_token.endpos}'
+            start = node.first_token.startpos  # type: ignore[attr-defined]
+            end = node.last_token.endpos  # type: ignore[attr-defined]
+            span = f'{start}-{end}'
             return dict(fields, **{'@span': span})
         return fields

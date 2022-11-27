@@ -14,3 +14,4 @@ pytype
 pytest-cov
 types-six
 types-xmltodict
+lxml-stubs
