@@ -14,6 +14,12 @@ for line in sys.stdin:
 endef
 export PRINT_HELP_PYSCRIPT
 
+.PHONY: virtual_env_set
+virtual_env_set:
+ifndef VIRTUAL_ENV
+	$(error VIRTUAL_ENV not set)
+endif
+
 .PHONY: help
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
@@ -21,7 +27,6 @@ help:
 .PHONY: clean
 clean: ## remove build artifacts
 	rm -rf build/ \
-	       docs/ \
 	       dist/ \
 	       .eggs/
 	find . -name '.eggs' -type d -exec rm -rf {} +
@@ -33,7 +38,7 @@ clean: ## remove build artifacts
 
 .PHONY: dist
 dist: clean ## builds source and wheel package
-	python setup.py sdist bdist_wheel
+	python -m build -n
 
 .PHONY: release
 release: dist ## package and upload a release
@@ -76,3 +81,7 @@ upgrade: ## upgrade versions of third-party dependencies
 fmt: ## Reformat all Python files
 	isort $(PROJ_ROOT)
 	black $(PROJ_ROOT)
+
+.PHONY: init
+init: virtual_env_set install
+	pre-commit install

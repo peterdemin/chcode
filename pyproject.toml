@@ -1,12 +1,6 @@
-# NOTE: you have to use single-quoted strings in TOML for regular expressions.
-# It's the equivalent of r-strings in Python.  Multiline strings are treated as
-# verbose regular expressions by Black.  Use [ ] to denote a significant space
-# character.
-
 [tool.black]
 line-length = 100
 target-version = ['py38']
-skip-string-normalization = true
 
 [tool.isort]
 profile = 'black'
@@ -16,9 +10,9 @@ force_grid_wrap = 0
 use_parentheses = true
 line_length = 100
 
-
 [tool.flake8]
 max-line-length = 100
+max-complexity = 10
 
 [tool.pylint.main]
 # Analyse import fallback blocks. This can be used to support both Python 2 and 3
